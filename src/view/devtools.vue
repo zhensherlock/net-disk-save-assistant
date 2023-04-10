@@ -57,7 +57,7 @@ let output = ref('')
 const handleTabChange = () => {}
 
 const handleExecute = async () => {
-  handleRunScript(`location.href = 'https://pan.baidu.com/s/1M5Z1XEXnecxO2naPXMIH8Q?pwd=87q5'`)
+  handleRunScript(`location.href = '${input.value}'`)
   await sleep(4000)
   // chrome.runtime.sendMessage(
   //   "bfhcdpbamfjnmgjjljfdddmilafoeakc", // PUT YOUR EXTENSION ID HERE
@@ -89,16 +89,13 @@ location.href = 'https://pan.baidu.com/disk/main?from=homeSave#/index?category=a
   })
   handleRunScript(`document.querySelector('[title="分享"]').click()`)
   await sleep(2000)
-  handleRunScript(`
-document.querySelector('.wp-s-share-to-link__create-form-radiu label:last-child').click()
-document.querySelector('.wp-s-share-to-link__create-form-submit--button').click()
-`)
+  handleRunScript(`document.querySelector('.wp-s-share-to-link__create-form-radiu label:last-child').click()`)
   await sleep(2000)
-
+  handleRunScript(`document.querySelector('.wp-s-share-to-link__create-form-submit--button').click()`)
+  await sleep(2000)
   handleRunScript(`document.querySelector('.wp-s-share-to-link__link-info-url-wrapper input').value`, (result) => {
     output.value += result
   })
-
 }
 
 const handleRunScript = (code, cb) => {
