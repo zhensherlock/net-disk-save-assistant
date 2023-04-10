@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "网盘转存助手",
+  "description": "自动转存，解放双手！",
+  "version": "0.0.1",
+  "background": {
+    "service_worker": "/background.js"
+  },
+//  "action": {
+//    "default_popup": "popup.html"
+//  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "libs/styles/element-plus.css" ],
+      "matches": [ "https://*/*" ]
+    }
+  ],
+//  "content_scripts": [
+//    {
+//      "matches": [
+//        "https://pan.baidu.com/*"
+//      ],
+//      "js": [
+//        "libs/jquery-3.6.0.min.js",
+//        "/content.js"
+//      ]
+//    }
+//  ],
+//  "options_page": "options.html",
+  "devtools_page": "devtools.html",
+  "permissions": [
+    "tabs",
+    "scripting",
+    "activeTab",
+    "declarativeContent",
+    "storage",
+    "webRequest"
+  ]
+}
