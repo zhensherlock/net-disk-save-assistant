@@ -46,6 +46,7 @@ export const runScript = (code, cb) => {
   chrome.devtools.inspectedWindow.eval(code, cb || ((result, isException) => {
     if (isException) {
       console.log('the script does not work')
+      runScript(code, cb)
     }
   }))
 }

@@ -15,12 +15,14 @@
           :rows="3"
           type="textarea"
           placeholder=""
+          readonly
         />
       </el-col>
     </el-row>
     <el-row class="m-t-10px">
       <el-col :span="24">
-        <el-button type="primary" @click="handleExecute">开始转存</el-button>
+        <el-button type="primary" plain @click="handleExecute" :loading="executeLoading">开始转存</el-button>
+        <el-button plain @click="handleReset">重置</el-button>
       </el-col>
     </el-row>
   </div>
@@ -35,13 +37,20 @@ export default {
 <script setup>
 import { ref } from 'vue'
 import { runScript, sleep } from '@/utils'
+import { ElMessage } from 'element-plus'
 
 const input = ref('')
 let output = ref('')
+const executeLoading = ref(false)
 
 const handleExecute = async () => {
+  if (!input.value) {
+    ElMessage.error('请输入百度分享网址！')
+    return
+  }
+  executeLoading.value = true
   runScript(`location.href = '${input.value}'`)
-  await sleep(4000)
+  await sleep(5000)
   // chrome.runtime.sendMessage(
   //   "bfhcdpbamfjnmgjjljfdddmilafoeakc", // PUT YOUR EXTENSION ID HERE
   //   "foo",
@@ -50,13 +59,13 @@ const handleExecute = async () => {
   //   }
   // );
   runScript('document.querySelector(\'[node-type="shareSave"]\').click()')
-  await sleep(2000)
+  await sleep(3000)
   runScript('document.querySelector(\'[node-path="/MAC"]\').click()')
-  await sleep(2000)
+  await sleep(3000)
   runScript('document.querySelector(\'[node-path="/MAC/app"]\').click()')
-  await sleep(2000)
+  await sleep(3000)
   runScript('document.querySelector(\'[node-type="confirm"]\').click()')
-  await sleep(2000)
+  await sleep(3000)
   let file_list = []
   runScript('locals.get(\'file_list\')', (result) => {
     file_list = result
@@ -71,14 +80,20 @@ location.href = 'https://pan.baidu.com/disk/main?from=homeSave#/index?category=a
     runScript(`document.querySelector('[title="${item.server_filename}"]').click()`)
   })
   runScript(`document.querySelector('[title="分享"]').click()`)
-  await sleep(2000)
+  await sleep(3000)
   runScript(`document.querySelector('.wp-s-share-to-link__create-form-radiu label:last-child').click()`)
-  await sleep(2000)
+  await sleep(3000)
   runScript(`document.querySelector('.wp-s-share-to-link__create-form-submit--button').click()`)
-  await sleep(2000)
+  await sleep(3000)
   runScript(`document.querySelector('.wp-s-share-to-link__link-info-url-wrapper input').value`, (result) => {
     output.value += result
   })
+  executeLoading.value = false
+}
+
+const handleReset = () => {
+  input.value = ''
+  output.value = ''
 }
 </script>
 

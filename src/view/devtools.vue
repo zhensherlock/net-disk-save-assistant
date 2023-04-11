@@ -6,10 +6,10 @@
           <el-tab-pane label="百度网盘" name="baidu">
             <BaiduNetDisk></BaiduNetDisk>
           </el-tab-pane>
-          <el-tab-pane label="蓝奏云" name="lanzou">
-          </el-tab-pane>
-          <el-tab-pane label="Michael" name="michael">
-          </el-tab-pane>
+<!--          <el-tab-pane label="蓝奏云" name="lanzou">-->
+<!--          </el-tab-pane>-->
+<!--          <el-tab-pane label="Michael" name="michael">-->
+<!--          </el-tab-pane>-->
         </el-tabs>
       </el-main>
     </el-container>
@@ -41,6 +41,6 @@ const handleTabChange = () => {}
 }
 
 .main {
-  --el-main-padding: 5px 10px !important;
+  --el-main-padding: 0 10px !important;
 }
 </style>
