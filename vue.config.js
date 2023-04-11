@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const UnoCSS = require('@unocss/webpack').default
 
 // Generate pages object
 const pages = {}
@@ -30,6 +31,11 @@ module.exports = {
   pages,
   filenameHashing: false,
   chainWebpack: (config) => {
+    config.module.rule('vue').uses.delete('cache-loader')
+    config.module.rule('tsx').uses.delete('cache-loader')
+    config.merge({
+      cache: false,
+    })
     config.plugin('copy').use(require('copy-webpack-plugin'), [
       {
         patterns: [
@@ -50,7 +56,13 @@ module.exports = {
       filename: `[name].js`,
       chunkFilename: `[name].js`
     },
-    devtool: isDevMode ? 'inline-source-map' : false
+    devtool: isDevMode ? 'inline-source-map' : false,
+    plugins: [
+      UnoCSS(),
+    ],
+    optimization: {
+      realContentHash: true,
+    }
   },
   css: {
     extract: false // Make sure the css is the same
