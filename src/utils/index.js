@@ -41,3 +41,11 @@ export const injectStyle = ({ root, id, src }) => {
   style.setAttribute('rel', 'stylesheet')
   root.appendChild(style)
 }
+
+export const runScript = (code, cb) => {
+  chrome.devtools.inspectedWindow.eval(code, cb || ((result, isException) => {
+    if (isException) {
+      console.log('the script does not work')
+    }
+  }))
+}
