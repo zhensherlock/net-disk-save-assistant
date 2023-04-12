@@ -33,14 +33,31 @@ const tabName = ref('baidu')
 const handleTabChange = () => {}
 </script>
 
-<style>
+<style lang="scss" scoped>
 .container {
   width: 100%;
+  height: 100%;
   --color-primary: #4608ad;
   --color-primary-darken: #32067c;
 }
 
 .main {
   --el-main-padding: 0 10px !important;
+}
+
+.el-tabs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.el-tabs__content) {
+  flex: 1;
+}
+
+:deep(.el-tab-pane) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>
