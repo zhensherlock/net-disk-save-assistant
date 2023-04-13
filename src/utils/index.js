@@ -50,3 +50,11 @@ export const runScript = (code, cb) => {
     }
   }))
 }
+
+export const scrollIntoView = (el, options = { behavior: 'smooth', block: 'start' }) => {
+  try {
+    el?.scrollIntoView(options)
+  } catch {
+    el?.scrollIntoView(true)
+  }
+}

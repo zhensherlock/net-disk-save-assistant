@@ -31,6 +31,7 @@
       <el-collapse-item title="执行日志" class="collapse-item--activities">
         <el-timeline>
           <el-timeline-item
+            ref="timelineItems"
             v-for="(activity, index) in activities"
             :key="index"
             :type="activity.type"
@@ -51,8 +52,8 @@ export default {
 </script>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { runScript, sleep } from '@/utils'
+import { ref, reactive, nextTick } from 'vue'
+import { runScript, sleep, scrollIntoView } from '@/utils'
 import { ElMessage, dayjs } from 'element-plus'
 
 const input = ref('http://127.0.0.1:5000/redirect_link')
@@ -63,6 +64,7 @@ const advancedForm = reactive({
   callback_url: 'http://127.0.0.1:5000/set_transfer_link',
   callback_url_param_key: 'url'
 })
+const timelineItems = ref([])
 
 const activities = reactive([])
 
@@ -134,6 +136,7 @@ location.href = 'https://pan.baidu.com/disk/main?from=homeSave#/index?category=a
     parentElement.parentElement.previousSibling.click()`)
   })
   handleAddActivity('选中保存的文件', 'success')
+  await sleep(3000)
   runScript(`document.querySelector('[title="分享"]').click()`)
   handleAddActivity('点击分享按钮', 'success')
   await sleep(3000)
@@ -173,6 +176,9 @@ const handleAddActivity = (content, type) => {
     content,
     timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     type
+  })
+  nextTick(() => {
+    scrollIntoView(timelineItems.value[activities.length - 1].$el)
   })
 }
 </script>
