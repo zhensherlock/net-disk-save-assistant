@@ -12,6 +12,7 @@
       <el-col :span="24">
         <el-button type="primary" plain @click="handleExecute" :loading="executeLoading">开始转存</el-button>
         <el-button plain @click="handleReset">重置</el-button>
+        <el-button plain type="danger" @click="handleStop">暂停</el-button>
       </el-col>
     </el-row>
     <el-collapse class="m-t-10px">
@@ -59,6 +60,7 @@ import { ElMessage, dayjs } from 'element-plus'
 const input = ref('http://127.0.0.1:5000/redirect_link')
 let output = ref('')
 const executeLoading = ref(false)
+const status = ref('stop')
 const advancedForm = reactive({
   repeat_count: 1,
   callback_url: 'http://127.0.0.1:5000/set_transfer_link',
@@ -69,11 +71,21 @@ const timelineItems = ref([])
 const activities = reactive([])
 
 const handleExecute = async () => {
+  handleAddActivity('开始执行任务', 'info')
+  status.value = 'start'
   for (const [index] of new Array(advancedForm.repeat_count).fill(0).entries()) {
     handleAddActivity(`开始第${index + 1}次任务`, 'primary')
     await handleTransfer()
     handleAddActivity(`结束第${index + 1}次任务`, 'primary')
+    if (status.value === 'stop') {
+      break
+    }
   }
+}
+
+const handleStop = () => {
+  status.value = 'stop'
+  handleAddActivity('已暂停轮询任务，不再继续执行', 'warning')
 }
 
 const handleTransfer = async () => {
